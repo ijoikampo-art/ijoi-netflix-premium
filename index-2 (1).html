@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Netflix Premium Private - pilihan 1 atau 2 peranti.">
+  <title>Netflix Premium Private | Ijoi</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #050505;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Cinematic background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(229,9,20,.22), transparent 28%),
+        radial-gradient(circle at 85% 75%, rgba(180,0,0,.18), transparent 30%),
+        linear-gradient(135deg, #070707 0%, #151515 45%, #050505 100%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        linear-gradient(115deg, transparent 0 42%, rgba(255,255,255,.025) 45%, transparent 48%),
+        linear-gradient(290deg, transparent 0 55%, rgba(229,9,20,.035) 58%, transparent 62%);
+      animation: bgMove 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgMove {
+      from { transform: translateX(-2%) scale(1.02); }
+      to { transform: translateX(2%) scale(1.06); }
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(0,0,0,.72);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      font-weight: 900;
+      letter-spacing: 1px;
+      font-size: 20px;
+    }
+
+    .brand span { color: #e50914; }
+
+    .nav-btn {
+      text-decoration: none;
+      color: #fff;
+      background: #e50914;
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .hero {
+      min-height: 78vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 70px 18px 45px;
+      position: relative;
+    }
+
+    .hero-inner {
+      width: min(900px, 100%);
+      animation: rise .9s ease both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 1px solid rgba(229,9,20,.65);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(229,9,20,.12);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 8vw, 78px);
+      line-height: .95;
+      font-weight: 950;
+      letter-spacing: -2px;
+      text-shadow: 0 12px 40px rgba(0,0,0,.7);
+    }
+
+    h1 .red { color: #e50914; }
+
+    .hero p {
+      max-width: 650px;
+      margin: 22px auto 0;
+      color: #d5d5d5;
+      font-size: clamp(15px, 2.5vw, 19px);
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 13px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 900;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.08);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: #e50914;
+      box-shadow: 0 10px 35px rgba(229,9,20,.25);
+    }
+
+    .btn-secondary {
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .section {
+      width: min(1100px, calc(100% - 30px));
+      margin: 0 auto;
+      padding: 60px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(27px, 5vw, 42px);
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      color: #aaa;
+      line-height: 1.5;
+    }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(30,30,30,.95), rgba(10,10,10,.96));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 20px;
+      padding: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 70px rgba(0,0,0,.35);
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(229,9,20,.55);
+    }
+
+    .card.hot {
+      border-color: rgba(229,9,20,.72);
+      box-shadow: 0 20px 80px rgba(229,9,20,.10);
+    }
+
+    .hot-label {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #e50914;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .icon {
+      font-size: 34px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 { font-size: 24px; }
+
+    .price {
+      margin: 12px 0 5px;
+      font-size: 42px;
+      font-weight: 950;
+    }
+
+    .price small {
+      font-size: 15px;
+      color: #aaa;
+      font-weight: 700;
+    }
+
+    .desc {
+      color: #aaa;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .features {
+      list-style: none;
+      display: grid;
+      gap: 11px;
+      color: #ddd;
+      margin: 20px 0 25px;
+    }
+
+    .features li::before {
+      content: "✓";
+      color: #e50914;
+      font-weight: 900;
+      margin-right: 9px;
+    }
+
+    .card .btn { width: 100%; }
+
+    .trailer {
+      background: linear-gradient(145deg, rgba(24,24,24,.9), rgba(8,8,8,.95));
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 22px;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .trailer-screen {
+      min-height: 250px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      margin: 18px 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(229,9,20,.28), transparent 28%),
+        linear-gradient(135deg, #181818, #030303);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .play {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #e50914;
+      font-size: 28px;
+      box-shadow: 0 0 0 10px rgba(229,9,20,.10), 0 15px 45px rgba(229,9,20,.25);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 18px rgba(229,9,20,0), 0 15px 45px rgba(229,9,20,.25); }
+    }
+
+    .trailer h3 { font-size: 28px; }
+    .trailer p { color: #aaa; line-height: 1.5; margin-top: 8px; }
+
+    .notice {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 25px;
+    }
+
+    footer {
+      padding: 35px 18px 90px;
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+
+    .float {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 100;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      text-decoration: none;
+      background: #e50914;
+      font-size: 24px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.5);
+      animation: float 2.8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      50% { transform: translateY(-7px); }
+    }
+
+    @media (max-width: 700px) {
+      .pricing { grid-template-columns: 1fr; }
+      .hero { min-height: 70vh; padding-top: 55px; }
+      .card { padding: 23px; }
+      .section { padding: 45px 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    PENTING:
+    Gantikan URL di bawah dengan link tempahan WhatsApp/Wassap.my anda.
+    Contoh:
+    https://wa.me/60123456789?text=Saya%20nak%20tempah%20Netflix
+  -->
+  <script>
+    const ORDER_LINK = "https://www.wassap.my/";
+  </script>
+
+  <header class="topbar">
+    <nav class="nav">
+      <div class="brand"><span>NETFLIX</span> PREMIUM</div>
+      <a class="nav-btn" href="#harga">LIHAT HARGA</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="badge">🔥 PREMIUM PRIVATE • PILIHAN PERANTI</div>
+        <h1>HIBURAN <span class="red">TANPA GANGGUAN</span></h1>
+        <p>
+          Nikmati pengalaman menonton yang lebih mudah dengan pilihan
+          Netflix Premium Private untuk kegunaan harian.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary order-link" href="#">📲 TEMPAH SEKARANG</a>
+          <a class="btn btn-secondary" href="#trailer">🎬 LIHAT TRAILER</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="harga">
+      <div class="section-title">
+        <h2>🔥 PILIHAN PELAN</h2>
+        <p>Pilih mengikut jumlah peranti yang anda perlukan.</p>
+      </div>
+
+      <div class="pricing">
+        <article class="card">
+          <div class="icon">👤</div>
+          <h3>1 Peranti</h3>
+          <div class="price">RM17 <small>/bln</small></div>
+          <p class="desc">Sesuai untuk kegunaan peribadi.</p>
+
+          <ul class="features">
+            <li>1 peranti</li>
+            <li>Harga berpatutan</li>
+            <li>Mudah diaktifkan</li>
+            <li>Sesuai untuk tontonan harian</li>
+          </ul>
+
+          <a class="btn btn-primary order-link" href="#">📲 TEMPAH SEKARANG</a>
+        </article>
+
+        <article class="card hot">
+          <div class="hot-label">HOT DEAL</div>
+          <div class="icon">👥</div>
+          <h3>2 Peranti</h3>
+          <div class="price">RM20 <small>/bln</small></div>
+          <p class="desc">Akses pada 2 peranti (satu akaun).</p>
+
+          <ul class="features">
+            <li>2 peranti</li>
+            <li>Harga berpatutan</li>
+            <li>Mudah diaktifkan</li>
+            <li>Sesuai untuk tontonan harian</li>
+          </ul>
+
+          <a class="btn btn-primary order-link" href="#">🔥 TEMPAH HOT DEAL</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="trailer">
+      <div class="section-title">
+        <h2>🎬 APEX</h2>
+        <p>Trailer rasmi untuk filem Apex.</p>
+      </div>
+
+      <div class="trailer">
+        <div class="trailer-screen">
+          <div>
+            <div class="play">▶</div>
+            <p style="margin-top:16px;color:#ddd;font-weight:800;">APEX — OFFICIAL TRAILER</p>
+          </div>
+        </div>
+
+        <h3>APEX — Official Trailer</h3>
+        <p>
+          Tonton trailer rasmi Apex melalui halaman Netflix.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary"
+             href="https://www.netflix.com/sg/title/81763251"
+             target="_blank" rel="noopener">
+            ▶ TONTON TRAILER RASMI
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>✨ KENAPA PILIH KAMI?</h2>
+      </div>
+
+      <div class="pricing">
+        <article class="card">
+          <div class="icon">⚡</div>
+          <h3>Ringkas</h3>
+          <p class="desc">Maklumat harga dan pilihan peranti dipaparkan dengan jelas.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">📱</div>
+          <h3>Mesra Android</h3>
+          <p class="desc">Reka bentuk responsif untuk telefon, tablet dan desktop.</p>
+        </article>
+      </div>
+
+      <p class="notice">
+        *Perniagaan bebas, bukan halaman rasmi Netflix. Pastikan tawaran, harga,
+        penggunaan akaun dan kaedah penjualan anda mematuhi terma serta polisi
+        platform yang berkaitan.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 IJOI • Netflix Premium Private
+  </footer>
+
+  <a class="float order-link" href="#" aria-label="Tempah sekarang">📲</a>
+
+  <script>
+    document.querySelectorAll(".order-link").forEach(link => {
+      link.href = ORDER_LINK;
+      link.target = "_blank";
+      link.rel = "noopener";
+    });
+  </script>
+</body>
+</html>
