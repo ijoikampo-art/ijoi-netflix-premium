@@ -1,1315 +1,580 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050505">
-
-<title>IJOI NETFLIX PREMIUM</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#050505;
-    color:white;
-    overflow-x:hidden;
-    -webkit-tap-highlight-color:transparent;
-}
-
-/* ================= BACKGROUND ================= */
-
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:-2;
-    background:
-    radial-gradient(circle at 20% 20%,rgba(229,9,20,.22),transparent 30%),
-    radial-gradient(circle at 80% 70%,rgba(229,9,20,.15),transparent 30%),
-    linear-gradient(135deg,#050505,#151515,#050505);
-}
-
-body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:-1;
-    pointer-events:none;
-    background:linear-gradient(
-        115deg,
-        transparent 40%,
-        rgba(255,255,255,.025) 50%,
-        transparent 60%
-    );
-    animation:backgroundMove 10s infinite alternate;
-}
-
-@keyframes backgroundMove{
-    from{transform:translateX(-4%)}
-    to{transform:translateX(4%)}
-}
-
-/* ================= WATERMARK ================= */
-
-.ijoi-watermark{
-    position:fixed;
-    inset:0;
-    z-index:9998;
-    pointer-events:none;
-    overflow:hidden;
-    opacity:.055;
-}
-
-.ijoi-watermark span{
-    position:absolute;
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:4px;
-    color:#fff;
-    transform:rotate(-25deg);
-    white-space:nowrap;
-    user-select:none;
-}
-
-.ijoi-watermark span:nth-child(1){
-    top:15%;
-    left:5%;
-}
-
-.ijoi-watermark span:nth-child(2){
-    top:40%;
-    left:55%;
-}
-
-.ijoi-watermark span:nth-child(3){
-    top:70%;
-    left:15%;
-}
-
-.ijoi-watermark span:nth-child(4){
-    top:90%;
-    left:65%;
-}
-
-/* ================= NAVBAR ================= */
-
-.navbar{
-    position:sticky;
-    top:0;
-    z-index:100;
-    background:rgba(0,0,0,.88);
-    backdrop-filter:blur(15px);
-    border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.nav-inner{
-    max-width:1100px;
-    margin:auto;
-    padding:15px 18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.logo{
-    font-size:21px;
-    font-weight:900;
-    letter-spacing:1px;
-}
-
-.logo span{
-    color:#e50914;
-}
-
-.nav-button{
-    background:#e50914;
-    color:white;
-    padding:10px 16px;
-    border-radius:30px;
-    text-decoration:none;
-    font-size:13px;
-    font-weight:bold;
-    transition:.25s;
-}
-
-.nav-button:hover{
-    transform:translateY(-2px);
-}
-
-/* ================= HERO ================= */
-
-.hero{
-    min-height:75vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:70px 20px;
-}
-
-.hero-content{
-    max-width:900px;
-    animation:heroIn 1s ease;
-}
-
-@keyframes heroIn{
-    from{
-        opacity:0;
-        transform:translateY(30px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.badge{
-    display:inline-block;
-    padding:8px 15px;
-    border:1px solid #e50914;
-    border-radius:30px;
-    background:rgba(229,9,20,.12);
-    font-size:12px;
-    font-weight:bold;
-    margin-bottom:20px;
-}
-
-.hero h1{
-    font-size:clamp(42px,8vw,78px);
-    line-height:.95;
-    font-weight:900;
-    letter-spacing:-3px;
-}
-
-.hero h1 span{
-    color:#e50914;
-}
-
-.hero p{
-    max-width:650px;
-    margin:22px auto;
-    color:#ccc;
-    line-height:1.6;
-    font-size:17px;
-}
-
-.hero-offer{
-    max-width:650px;
-    margin:20px auto;
-    padding:18px;
-    border-radius:16px;
-    background:
-    linear-gradient(
-        145deg,
-        rgba(229,9,20,.14),
-        rgba(20,20,20,.85)
-    );
-    border:1px solid rgba(229,9,20,.35);
-}
-
-.hero-offer strong{
-    display:block;
-    margin-bottom:8px;
-    font-size:18px;
-}
-
-.hero-offer span{
-    color:#bbb;
-    font-size:14px;
-}
-
-.buttons{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
-    margin-top:25px;
-}
-
-.btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:14px 22px;
-    min-height:48px;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:bold;
-    transition:.25s;
-}
-
-.btn:hover{
-    transform:translateY(-3px);
-}
-
-.red-btn{
-    background:#e50914;
-    color:white;
-    box-shadow:0 10px 35px rgba(229,9,20,.25);
-}
-
-.red-btn:hover{
-    background:#ff121d;
-}
-
-.dark-btn{
-    background:#1b1b1b;
-    color:white;
-    border:1px solid #333;
-}
-
-/* ================= SECTION ================= */
-
-.section{
-    width:min(1100px,calc(100% - 30px));
-    margin:auto;
-    padding:55px 0;
-}
-
-.section-title{
-    text-align:center;
-    margin-bottom:30px;
-}
-
-.section-title h2{
-    font-size:clamp(28px,5vw,42px);
-    margin-bottom:8px;
-}
-
-.section-title p{
-    color:#999;
-    line-height:1.5;
-}
-
-/* ================= PRICE ================= */
-
-.price-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
-}
-
-.price-card{
-    position:relative;
-    padding:28px;
-    border-radius:20px;
-    background:linear-gradient(145deg,#1d1d1d,#090909);
-    border:1px solid rgba(255,255,255,.1);
-    box-shadow:0 20px 60px rgba(0,0,0,.4);
-    transition:.3s;
-    overflow:hidden;
-}
-
-.price-card::after{
-    content:"IJOI";
-    position:absolute;
-    right:-20px;
-    bottom:15px;
-    font-size:65px;
-    font-weight:900;
-    color:rgba(255,255,255,.025);
-    transform:rotate(-15deg);
-    pointer-events:none;
-}
-
-.price-card:hover{
-    transform:translateY(-7px);
-    border-color:#e50914;
-}
-
-.hot{
-    border-color:#e50914;
-}
-
-.hot-label{
-    position:absolute;
-    right:18px;
-    top:18px;
-    background:#e50914;
-    padding:7px 10px;
-    border-radius:30px;
-    font-size:10px;
-    font-weight:bold;
-}
-
-.card-icon{
-    font-size:35px;
-    margin-bottom:10px;
-}
-
-.price-card h3{
-    font-size:24px;
-}
-
-.price{
-    font-size:43px;
-    font-weight:900;
-    margin:12px 0;
-}
-
-.price small{
-    color:#999;
-    font-size:14px;
-}
-
-.description{
-    color:#aaa;
-    line-height:1.5;
-}
-
-.features{
-    list-style:none;
-    margin:20px 0;
-    display:grid;
-    gap:10px;
-    color:#ddd;
-}
-
-.features li::before{
-    content:"✓";
-    color:#e50914;
-    font-weight:bold;
-    margin-right:9px;
-}
-
-.full-btn{
-    width:100%;
-}
-
-/* ================= TRAILER ================= */
-
-.trailer-wrapper{
-    width:100%;
-    overflow:hidden;
-    position:relative;
-    padding:20px 0 30px;
-}
-
-.trailer-wrapper::before,
-.trailer-wrapper::after{
-    content:"";
-    position:absolute;
-    top:0;
-    bottom:0;
-    width:90px;
-    z-index:5;
-    pointer-events:none;
-}
-
-.trailer-wrapper::before{
-    left:0;
-    background:linear-gradient(to right,#050505,transparent);
-}
-
-.trailer-wrapper::after{
-    right:0;
-    background:linear-gradient(to left,#050505,transparent);
-}
-
-.trailer-track{
-    display:flex;
-    width:max-content;
-    gap:18px;
-    animation:trailerMove 45s linear infinite;
-}
-
-@keyframes trailerMove{
-    0%{
-        transform:translateX(-50%);
-    }
-    100%{
-        transform:translateX(0);
-    }
-}
-
-.trailer-wrapper:hover .trailer-track{
-    animation-play-state:paused;
-}
-
-.trailer-card{
-    flex:0 0 250px;
-    position:relative;
-    border-radius:15px;
-    overflow:hidden;
-    background:#111;
-    border:1px solid rgba(255,255,255,.1);
-    box-shadow:0 15px 45px rgba(0,0,0,.45);
-    transition:.3s;
-    text-decoration:none;
-    color:white;
-}
-
-.trailer-card:hover{
-    transform:translateY(-8px) scale(1.03);
-    border-color:#e50914;
-}
-
-.trailer-card img{
-    width:100%;
-    aspect-ratio:16/9;
-    object-fit:cover;
-    display:block;
-    transition:.4s;
-}
-
-.trailer-card:hover img{
-    transform:scale(1.08);
-}
-
-.trailer-overlay{
-    position:absolute;
-    inset:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(
-        rgba(0,0,0,.15),
-        rgba(0,0,0,.75)
-    );
-}
-
-.play-button{
-    width:58px;
-    height:58px;
-    border-radius:50%;
-    background:#e50914;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:23px;
-    box-shadow:
-    0 0 0 8px rgba(229,9,20,.15),
-    0 10px 35px rgba(0,0,0,.5);
-    animation:playPulse 2s infinite;
-}
-
-@keyframes playPulse{
-    50%{
-        box-shadow:
-        0 0 0 16px rgba(229,9,20,0),
-        0 10px 35px rgba(0,0,0,.5);
-    }
-}
-
-.trailer-name{
-    padding:12px;
-    text-align:center;
-    font-size:13px;
-    font-weight:bold;
-    position:relative;
-}
-
-.trailer-name::after{
-    content:"IJOI";
-    position:absolute;
-    right:8px;
-    bottom:5px;
-    font-size:8px;
-    color:rgba(255,255,255,.3);
-    letter-spacing:1px;
-}
-
-.swipe-text{
-    text-align:center;
-    color:#777;
-    font-size:12px;
-    margin-top:10px;
-}
-
-/* ================= INFO ================= */
-
-.info-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
-}
-
-.info-card{
-    background:#111;
-    border:1px solid #252525;
-    border-radius:18px;
-    padding:25px;
-    text-align:center;
-    transition:.3s;
-}
-
-.info-card:hover{
-    transform:translateY(-5px);
-    border-color:#e50914;
-}
-
-.info-card .icon{
-    font-size:35px;
-    margin-bottom:10px;
-}
-
-.info-card h3{
-    margin-bottom:8px;
-}
-
-.info-card p{
-    color:#999;
-    line-height:1.5;
-}
-
-/* ================= ORDER ================= */
-
-.order-box{
-    margin-top:35px;
-    padding:30px 20px;
-    text-align:center;
-    border-radius:20px;
-    background:linear-gradient(145deg,#1d1d1d,#090909);
-    border:1px solid rgba(229,9,20,.35);
-    box-shadow:0 20px 60px rgba(0,0,0,.4);
-}
-
-.order-box h2{
-    font-size:clamp(25px,5vw,38px);
-    margin-bottom:10px;
-}
-
-.order-box p{
-    color:#aaa;
-    line-height:1.6;
-    margin-bottom:18px;
-}
-
-/* ================= FOOTER ================= */
-
-footer{
-    text-align:center;
-    padding:35px 20px 100px;
-    color:#666;
-    font-size:12px;
-    border-top:1px solid #171717;
-}
-
-/* ================= FLOATING WHATSAPP ================= */
-
-.floating{
-    position:fixed;
-    right:18px;
-    bottom:18px;
-    z-index:200;
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#25D366;
-    color:white;
-    text-decoration:none;
-    font-size:24px;
-    box-shadow:0 10px 35px rgba(0,0,0,.6);
-    animation:floatButton 2.5s infinite;
-}
-
-@keyframes floatButton{
-    50%{
-        transform:translateY(-7px);
-    }
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:700px){
-
-    .price-grid,
-    .info-grid{
-        grid-template-columns:1fr;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔥 NETFLIX PREMIUM PRIVATE · ijoi premium</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
     }
 
-    .trailer-card{
-        flex-basis:220px;
+    body {
+      background-color: #0b0b0b;
+      background-image: radial-gradient(circle at 20% 30%, #1a0a0a 0%, #000000 90%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
     }
 
-    .hero{
-        min-height:70vh;
-        padding-top:50px;
+    .landing-card {
+      max-width: 1200px;
+      width: 100%;
+      background: linear-gradient(145deg, #1a0c0c 0%, #0a0505 100%);
+      border: 1px solid #b30000;
+      box-shadow: 0 25px 50px -8px rgba(220, 0, 0, 0.3);
+      border-radius: 42px;
+      padding: 2rem 2.5rem 3rem;
+      position: relative;
+      overflow: hidden;
+      transition: 0.3s;
     }
 
-    .section{
-        padding:45px 0;
+    /* WATERMARK "ijoi premium" */
+    .watermark {
+      position: absolute;
+      bottom: 20px;
+      right: 30px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: rgba(180, 0, 0, 0.25);
+      text-shadow: 0 0 12px #aa0000, 0 0 30px #660000;
+      transform: rotate(-6deg);
+      pointer-events: none;
+      z-index: 10;
+      font-style: italic;
+      background: rgba(0,0,0,0.3);
+      padding: 0.3rem 1.2rem;
+      border-radius: 60px;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(200, 0, 0, 0.15);
+    }
+    .watermark i {
+      margin-right: 8px;
+      color: #cc2222;
     }
 
-    .logo{
-        font-size:17px;
+    /* header */
+    .badge-premium {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .badge-premium h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ff1a1a, #ff4d4d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-premium h1 i {
+      background: #cc0000;
+      padding: 10px 12px;
+      border-radius: 60px;
+      font-size: 1.5rem;
+      color: white;
+      -webkit-text-fill-color: white;
+      box-shadow: 0 0 20px #cc000088;
+    }
+    .sub-head {
+      color: #f0c0c0;
+      font-size: 1.3rem;
+      font-weight: 400;
+      border-left: 4px solid #e60000;
+      padding-left: 18px;
+      background: rgba(200, 0, 0, 0.08);
+      border-radius: 0 40px 40px 0;
+      padding: 0.6rem 1.8rem;
+      backdrop-filter: blur(2px);
     }
 
-    .nav-button{
-        padding:9px 12px;
-        font-size:11px;
+    /* TRAILER SCROLL dengan gambar thumbnail */
+    .trailer-scroll {
+      background: #1a0a0a;
+      border-radius: 40px;
+      padding: 0.8rem 0.5rem;
+      margin: 1.8rem 0 2.2rem;
+      border: 1px solid #b31b1b;
+      box-shadow: inset 0 0 30px #3a0000;
+      overflow: hidden;
+      position: relative;
+    }
+    .trailer-track {
+      display: flex;
+      gap: 1.2rem;
+      animation: slideRightToLeft 40s linear infinite;
+      width: max-content;
+      will-change: transform;
+    }
+    .trailer-item {
+      background: #0d0d0d;
+      border-radius: 20px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #a00000;
+      box-shadow: 0 0 15px #a0000055;
+      background: #1a0a0a;
+      min-width: 200px;
+      max-width: 200px;
+      backdrop-filter: blur(4px);
+      transition: 0.2s;
+    }
+    .trailer-item:hover {
+      border-color: #ff4444;
+      box-shadow: 0 0 30px #ff000066;
+      transform: scale(1.03);
+    }
+    .trailer-item .thumbnail {
+      width: 100%;
+      height: 110px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid #660000;
+      background: #111;
+    }
+    .trailer-item .trailer-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 4px;
+    }
+    .trailer-item .trailer-info span {
+      color: #f0d0d0;
+      font-weight: 600;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
+    .trailer-item .yt-link {
+      color: #ffb3b3;
+      font-size: 0.7rem;
+      background: #2a0a0a;
+      padding: 3px 12px;
+      border-radius: 50px;
+      border: 1px solid #cc3333;
+      text-decoration: none;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .trailer-item .yt-link:hover {
+      background: #cc0000;
+      color: white;
+      border-color: #ff6666;
+    }
+    .trailer-item .yt-link i {
+      font-size: 0.8rem;
     }
 
-    .hero h1{
-        letter-spacing:-2px;
+    @keyframes slideRightToLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
-    .ijoi-watermark span{
-        font-size:22px;
+    /* PLAN / HARGA */
+    .plan-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      justify-content: center;
+      margin: 2.5rem 0 2.2rem;
     }
-}
-</style>
+    .plan-card {
+      flex: 1 1 240px;
+      background: #140808;
+      border-radius: 36px;
+      padding: 1.8rem 1.2rem 1.8rem;
+      border: 1px solid #b30000;
+      box-shadow: 0 12px 30px -8px #3f0000;
+      transition: 0.2s;
+      text-align: center;
+      backdrop-filter: blur(4px);
+      background: rgba(20, 5, 5, 0.8);
+    }
+    .plan-card:hover {
+      border-color: #ff3a3a;
+      box-shadow: 0 0 40px #b3000088;
+      transform: scale(1.01);
+    }
+    .plan-card .device-icon {
+      font-size: 2.4rem;
+      color: #cc2222;
+      margin-bottom: 0.3rem;
+    }
+    .plan-card h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #f0d0d0;
+      letter-spacing: -0.5px;
+    }
+    .plan-card .price {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #ff4d4d;
+      background: #1f0808;
+      display: inline-block;
+      padding: 0.2rem 1.8rem;
+      border-radius: 60px;
+      margin: 0.6rem 0 0.8rem;
+      border: 1px solid #b30000;
+    }
+    .plan-card .desc {
+      color: #cfa0a0;
+      font-size: 0.95rem;
+      margin: 0.8rem 0 1.2rem;
+      line-height: 1.5;
+      min-height: 60px;
+    }
+    .plan-card .feature-list {
+      list-style: none;
+      color: #ddb0b0;
+      font-size: 0.9rem;
+      text-align: left;
+      padding: 0 0.5rem;
+    }
+    .plan-card .feature-list li {
+      padding: 6px 0;
+      border-bottom: 1px dashed #3f1a1a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .plan-card .feature-list i {
+      color: #ff4d4d;
+      width: 20px;
+    }
+
+    .btn-order {
+      display: inline-block;
+      background: #cc0000;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 0.9rem 2.8rem;
+      border-radius: 60px;
+      text-decoration: none;
+      border: 1px solid #ff6666;
+      box-shadow: 0 8px 20px #990000;
+      transition: 0.2s;
+      margin: 0.8rem 0 0.3rem;
+      letter-spacing: 0.8px;
+    }
+    .btn-order i {
+      margin-right: 12px;
+    }
+    .btn-order:hover {
+      background: #e60000;
+      transform: scale(1.04);
+      box-shadow: 0 0 40px #ff0000aa;
+      border-color: #ff9999;
+    }
+
+    .cta-wassap {
+      text-align: center;
+      margin: 2.2rem 0 0.8rem;
+    }
+    .cta-wassap a {
+      background: #1d8a3f;
+      padding: 1rem 2.8rem;
+      border-radius: 80px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.3rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid #3bbf5e;
+      box-shadow: 0 0 30px #1d8a3f88;
+      transition: 0.2s;
+    }
+    .cta-wassap a i {
+      font-size: 2rem;
+    }
+    .cta-wassap a:hover {
+      background: #22a34a;
+      transform: scale(1.02);
+      box-shadow: 0 0 50px #1d8a3fcc;
+    }
+
+    .foot-note {
+      margin-top: 2.8rem;
+      color: #7a4a4a;
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 1px solid #3a1a1a;
+      padding-top: 2rem;
+      letter-spacing: 0.3px;
+    }
+    .foot-note i {
+      color: #b30000;
+    }
+    .highlight {
+      color: #ff7777;
+    }
+
+    /* responsif */
+    @media (max-width: 700px) {
+      .landing-card { padding: 1.5rem 1rem; }
+      .badge-premium h1 { font-size: 1.8rem; flex-wrap: wrap; }
+      .sub-head { font-size: 1rem; padding: 0.3rem 1rem; }
+      .plan-card { flex: 1 1 100%; }
+      .watermark { font-size: 1rem; bottom: 12px; right: 15px; padding: 0.1rem 1rem; }
+      .trailer-item { min-width: 160px; max-width: 160px; }
+      .trailer-item .thumbnail { height: 90px; }
+    }
+  </style>
 </head>
-
 <body>
+<div class="landing-card">
 
-<!-- ================= WATERMARK ================= -->
+  <!-- WATERMARK ijoi premium -->
+  <div class="watermark">
+    <i class="fas fa-crown"></i> ijoi premium
+  </div>
 
-<div class="ijoi-watermark" aria-hidden="true">
-    <span>IJOI • PREMIUM</span>
-    <span>IJOI • PREMIUM</span>
-    <span>IJOI • PREMIUM</span>
-    <span>IJOI • PREMIUM</span>
+  <!-- HEADER -->
+  <div class="badge-premium">
+    <h1>
+      <i class="fas fa-fire"></i> NETFLIX PREMIUM PRIVATE
+    </h1>
+    <span class="sub-head">
+      <i class="fas fa-play-circle" style="color:#ff4d4d; margin-right: 8px;"></i> 🎬 Tanpa gangguan · harga patut
+    </span>
+  </div>
+
+  <!-- TRAILER SCROLL dengan GAMBAR (thumbnail) -->
+  <div class="trailer-scroll">
+    <div class="trailer-track">
+      <!-- Trailer 1 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/gH3fL9cMvuM/hqdefault.jpg" alt="Trailer 1">
+        <div class="trailer-info">
+          <span>🔥 Trailer 1</span>
+          <a href="https://youtu.be/gH3fL9cMvuM?si=qnRb8yMea5oC8sn3" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 2 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/7ZDSYBkcH2U/hqdefault.jpg" alt="Trailer 2">
+        <div class="trailer-info">
+          <span>🎬 Trailer 2</span>
+          <a href="https://youtu.be/7ZDSYBkcH2U?si=ZEASZWf-tKw0l5Hi" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 3 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/e26vQ3ddHRE/hqdefault.jpg" alt="Trailer 3">
+        <div class="trailer-info">
+          <span>📺 Trailer 3</span>
+          <a href="https://youtu.be/e26vQ3ddHRE?si=MoGCqaEt6nc3pnOS" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 4 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/8aulMPhE12g/hqdefault.jpg" alt="Trailer 4">
+        <div class="trailer-info">
+          <span>🍿 Trailer 4</span>
+          <a href="https://youtu.be/8aulMPhE12g?si=Wx6kRvhUagylxkaW" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 5 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/M9nc3simqAE/hqdefault.jpg" alt="Trailer 5">
+        <div class="trailer-info">
+          <span>🎞️ Trailer 5</span>
+          <a href="https://youtu.be/M9nc3simqAE?si=EHUbUdCvK5B2vrh-" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 6 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/kgv8jf_8dm0/hqdefault.jpg" alt="Trailer 6">
+        <div class="trailer-info">
+          <span>⚡ Trailer 6</span>
+          <a href="https://youtu.be/kgv8jf_8dm0?si=xUjhPatcPrQ31qD_" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 7 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/mu-Hqz_6E_0/hqdefault.jpg" alt="Trailer 7">
+        <div class="trailer-info">
+          <span>🎥 Trailer 7</span>
+          <a href="https://youtu.be/mu-Hqz_6E_0?si=lDP4AaLQE1Uf-Uw0" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 8 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/z1B5W55TFyo/hqdefault.jpg" alt="Trailer 8">
+        <div class="trailer-info">
+          <span>🔴 Trailer 8</span>
+          <a href="https://youtu.be/z1B5W55TFyo?si=hjBd8pJQOfLkkiL5" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 9 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/Hzk4ovnGOyw/hqdefault.jpg" alt="Trailer 9">
+        <div class="trailer-info">
+          <span>🎬 Trailer 9</span>
+          <a href="https://youtu.be/Hzk4ovnGOyw?si=YtxwSjIJ9KYxbQCB" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 10 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/K2KM_C_m8hA/hqdefault.jpg" alt="Trailer 10">
+        <div class="trailer-info">
+          <span>🔥 Trailer 10</span>
+          <a href="https://youtu.be/K2KM_C_m8hA?si=wi6iVQGLBzM8GAT3" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 11 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/89dugTvBEWw/hqdefault.jpg" alt="Trailer 11">
+        <div class="trailer-info">
+          <span>🎭 Trailer 11</span>
+          <a href="https://youtu.be/89dugTvBEWw?si=BZy1Hu-8U8LVpgSx" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 12 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/HK9dU6JIroU/hqdefault.jpg" alt="Trailer 12">
+        <div class="trailer-info">
+          <span>🎞️ Trailer 12</span>
+          <a href="https://youtu.be/HK9dU6JIroU?si=6PHbdNz8r5mAvy4O" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <!-- Trailer 13 -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/Sq1Cx3h8Niw/hqdefault.jpg" alt="Trailer 13">
+        <div class="trailer-info">
+          <span>🍿 Trailer 13</span>
+          <a href="https://youtu.be/Sq1Cx3h8Niw?si=GpcjCGQ75sbFAGbU" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+
+      <!-- DUPLIKAT untuk infinite scroll -->
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/gH3fL9cMvuM/hqdefault.jpg" alt="Trailer 1">
+        <div class="trailer-info">
+          <span>🔥 Trailer 1</span>
+          <a href="https://youtu.be/gH3fL9cMvuM?si=qnRb8yMea5oC8sn3" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/7ZDSYBkcH2U/hqdefault.jpg" alt="Trailer 2">
+        <div class="trailer-info">
+          <span>🎬 Trailer 2</span>
+          <a href="https://youtu.be/7ZDSYBkcH2U?si=ZEASZWf-tKw0l5Hi" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/e26vQ3ddHRE/hqdefault.jpg" alt="Trailer 3">
+        <div class="trailer-info">
+          <span>📺 Trailer 3</span>
+          <a href="https://youtu.be/e26vQ3ddHRE?si=MoGCqaEt6nc3pnOS" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/8aulMPhE12g/hqdefault.jpg" alt="Trailer 4">
+        <div class="trailer-info">
+          <span>🍿 Trailer 4</span>
+          <a href="https://youtu.be/8aulMPhE12g?si=Wx6kRvhUagylxkaW" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/M9nc3simqAE/hqdefault.jpg" alt="Trailer 5">
+        <div class="trailer-info">
+          <span>🎞️ Trailer 5</span>
+          <a href="https://youtu.be/M9nc3simqAE?si=EHUbUdCvK5B2vrh-" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+      <div class="trailer-item">
+        <img class="thumbnail" src="https://img.youtube.com/vi/kgv8jf_8dm0/hqdefault.jpg" alt="Trailer 6">
+        <div class="trailer-info">
+          <span>⚡ Trailer 6</span>
+          <a href="https://youtu.be/kgv8jf_8dm0?si=xUjhPatcPrQ31qD_" target="_blank" class="yt-link"><i class="fas fa-play"></i> tonton</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAN / PELAN -->
+  <div class="plan-grid">
+    <!-- 1 Peranti -->
+    <div class="plan-card">
+      <div class="device-icon"><i class="fas fa-mobile-alt"></i></div>
+      <h3>👤 1 Peranti</h3>
+      <div class="price">RM17<span style="font-size:1rem; font-weight:400; color:#aa6666;">/bulan</span></div>
+      <div class="desc">Sesuai untuk kegunaan peribadi.</div>
+      <ul class="feature-list">
+        <li><i class="fas fa-check-circle"></i> Akses penuh</li>
+        <li><i class="fas fa-check-circle"></i> Tiada gangguan</li>
+        <li><i class="fas fa-check-circle"></i> Mudah aktif</li>
+      </ul>
+      <a href="https://www.wassap.my/01137883797/NetflixPrivate" target="_blank" class="btn-order"><i class="fab fa-whatsapp"></i> Tempah</a>
+    </div>
+
+    <!-- 2 Peranti -->
+    <div class="plan-card">
+      <div class="device-icon"><i class="fas fa-tablet-alt"></i><i class="fas fa-mobile-alt" style="margin-left:6px;"></i></div>
+      <h3>👥 2 Peranti</h3>
+      <div class="price">RM20<span style="font-size:1rem; font-weight:400; color:#aa6666;">/bulan</span></div>
+      <div class="desc">Akses pada 2 peranti menggunakan satu akaun.</div>
+      <ul class="feature-list">
+        <li><i class="fas fa-check-circle"></i> 2 peranti serentak</li>
+        <li><i class="fas fa-check-circle"></i> Tanpa had tontonan</li>
+        <li><i class="fas fa-check-circle"></i> Harga patut</li>
+      </ul>
+      <a href="https://www.wassap.my/01137883797/NetflixPrivate" target="_blank" class="btn-order"><i class="fab fa-whatsapp"></i> Tempah</a>
+    </div>
+  </div>
+
+  <!-- kelebihan ringkas -->
+  <div style="display: flex; flex-wrap: wrap; gap: 0.8rem 1.8rem; justify-content: center; margin: 1rem 0 0.5rem; color: #e0b0b0; font-size:0.95rem; background: #1a0a0a55; padding: 0.8rem; border-radius: 60px; backdrop-filter: blur(2px);">
+    <span><i class="fas fa-check-circle" style="color:#cc0000;"></i> Harga berpatutan</span>
+    <span><i class="fas fa-check-circle" style="color:#cc0000;"></i> Mudah diaktifkan</span>
+    <span><i class="fas fa-check-circle" style="color:#cc0000;"></i> Sesuai tontonan harian</span>
+  </div>
+
+  <!-- CTA wassap utama -->
+  <div class="cta-wassap">
+    <a href="https://www.wassap.my/01137883797/NetflixPrivate" target="_blank">
+      <i class="fab fa-whatsapp"></i> 📩 Tempahan & Pertanyaan
+    </a>
+    <div style="margin-top: 8px; font-size: 0.9rem; color: #a06060;">
+      <i class="fas fa-arrow-right"></i> Klik untuk WhatsApp
+    </div>
+  </div>
+
+  <div class="foot-note">
+    <i class="fas fa-film"></i> Netflix Premium Private · <span class="highlight">ijoi premium</span> · 2026
+  </div>
+
 </div>
-
-<!-- ================= NAVBAR ================= -->
-
-<header class="navbar">
-    <div class="nav-inner">
-
-        <div class="logo">
-            <span>NETFLIX</span> PREMIUM
-        </div>
-
-        <!-- BETUL: terus ke WhatsApp -->
-        <a href="#harga" class="nav-button">
-    LIHAT HARGA
-</a>
-            LIHAT HARGA
-        </a>
-
-    </div>
-</header>
-
-<!-- ================= HERO ================= -->
-
-<section class="hero">
-
-    <div class="hero-content">
-
-        <div class="badge">
-            🔥 PREMIUM PRIVATE • PILIHAN PERANTI
-        </div>
-
-        <h1>
-            HIBURAN <span>TANPA GANGGUAN</span>
-        </h1>
-
-        <p>
-            Nikmati pengalaman menonton dengan pilihan
-            Netflix Premium Private untuk kegunaan harian.
-        </p>
-
-        <div class="hero-offer">
-
-            <strong>
-                🔥 NETFLIX PREMIUM PRIVATE 🎬
-            </strong>
-
-            <span>
-                Nikmati hiburan tanpa gangguan dengan harga yang berpatutan.
-            </span>
-
-        </div>
-
-        <div class="buttons">
-
-            <a href="#harga" class="btn red-btn">
-                🔥 LIHAT PELAN
-            </a>
-
-            <a href="#trailer" class="btn dark-btn">
-                🎬 TRAILER
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ================= HARGA ================= -->
-
-<section class="section" id="harga">
-
-    <div class="section-title">
-
-        <h2>🔥 PILIHAN PELAN</h2>
-
-        <p>
-            Pilih mengikut jumlah peranti yang diperlukan.
-        </p>
-
-    </div>
-
-    <div class="price-grid">
-
-        <!-- 1 DEVICE -->
-
-        <div class="price-card">
-
-            <div class="card-icon">👤</div>
-
-            <h3>1 Peranti</h3>
-
-            <div class="price">
-                RM17 <small>/bln</small>
-            </div>
-
-            <p class="description">
-                Sesuai untuk kegunaan peribadi.
-            </p>
-
-            <ul class="features">
-                <li>1 peranti</li>
-                <li>Harga berpatutan</li>
-                <li>Mudah diaktifkan</li>
-                <li>Sesuai untuk tontonan harian</li>
-            </ul>
-
-            <a
-            <a
-    href="#harga"
-    class="nav-button"
->
-    LIHAT HARGA
-</a>
-            >
-                📲 TEMPAH SEKARANG
-            </a>
-
-        </div>
-
-        <!-- 2 DEVICE -->
-
-        <div class="price-card hot">
-
-            <div class="hot-label">
-                HOT DEAL
-            </div>
-
-            <div class="card-icon">
-                👥
-            </div>
-
-            <h3>
-                2 Peranti
-            </h3>
-
-            <div class="price">
-                RM20 <small>/bln</small>
-            </div>
-
-            <p class="description">
-                Akses pada 2 peranti menggunakan satu akaun.
-            </p>
-
-            <ul class="features">
-                <li>2 peranti</li>
-                <li>Harga berpatutan</li>
-                <li>Mudah diaktifkan</li>
-                <li>Sesuai untuk tontonan harian</li>
-            </ul>
-
-            <a
-                href="https://wa.me/601137883797?text=Assalamualaikum%20saya%20berminat%20Netflix%20Premium%202%20Peranti%20RM20"
-                class="btn red-btn full-btn"
-                target="_blank"
-                rel="noopener"
-            >
-                🔥 TEMPAH HOT DEAL
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ================= TRAILER ================= -->
-
-<section class="section" id="trailer">
-
-    <div class="section-title">
-
-        <h2>🎬 TRAILER TERKINI</h2>
-
-        <p>
-            Trailer bergerak secara automatik —
-            tekan mana-mana poster untuk menonton.
-        </p>
-
-    </div>
-
-    <div class="trailer-wrapper">
-
-        <div class="trailer-track">
-
-            <!-- TRAILER 1 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/kgv8jf_8dm0"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/kgv8jf_8dm0/hqdefault.jpg"
-                    alt="Apex"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 APEX
-                </div>
-
-            </a>
-
-            <!-- TRAILER 2 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/MLxgaz2Zp1k"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/MLxgaz2Zp1k/hqdefault.jpg"
-                    alt="Trailer 02"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER 02
-                </div>
-
-            </a>
-
-            <!-- TRAILER 3 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/hzyOsNyDkbM"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/hzyOsNyDkbM/hqdefault.jpg"
-                    alt="Trailer 03"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER 03
-                </div>
-
-            </a>
-
-            <!-- TRAILER 4 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/Hzk4ovnGOyw"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/Hzk4ovnGOyw/hqdefault.jpg"
-                    alt="Trailer 04"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER 04
-                </div>
-
-            </a>
-
-            <!-- TRAILER 5 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/mcjjPpd5s1A"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/mcjjPpd5s1A/hqdefault.jpg"
-                    alt="Trailer 05"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER 05
-                </div>
-
-            </a>
-
-            <!-- TRAILER 6 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/y4ZBSzYUTL0"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/y4ZBSzYUTL0/hqdefault.jpg"
-                    alt="Trailer 06"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER 06
-                </div>
-
-            </a>
-
-            <!-- TRAILER 7 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/YqpIKFUrLrk"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/YqpIKFUrLrk/hqdefault.jpg"
-                    alt="Trailer 07"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER 07
-                </div>
-
-            </a>
-
-            <!-- TRAILER 8 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/ZHRR-1CKYIQ"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/ZHRR-1CKYIQ/hqdefault.jpg"
-                    alt="Trailer 08"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER 08
-                </div>
-
-            </a>
-
-            <!-- TRAILER 9 -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/5Zpg-EP8G30"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/5Zpg-EP8G30/hqdefault.jpg"
-                    alt="Trailer 09"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER 09
-                </div>
-
-            </a>
-
-            <!-- ULANGAN UNTUK LOOP -->
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/kgv8jf_8dm0"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/kgv8jf_8dm0/hqdefault.jpg"
-                    alt="Apex"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 APEX
-                </div>
-
-            </a>
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/MLxgaz2Zp1k"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/MLxgaz2Zp1k/hqdefault.jpg"
-                    alt="Trailer"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER
-                </div>
-
-            </a>
-
-            <a
-                class="trailer-card"
-                href="https://youtu.be/hzyOsNyDkbM"
-                target="_blank"
-                rel="noopener"
-            >
-
-                <img
-                    src="https://i.ytimg.com/vi/hzyOsNyDkbM/hqdefault.jpg"
-                    alt="Trailer"
-                >
-
-                <div class="trailer-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-
-                <div class="trailer-name">
-                    🎬 TRAILER
-                </div>
-
-            </a>
-
-        </div>
-
-    </div>
-
-    <div class="swipe-text">
-        ⬅️ Gerakkan / swipe untuk lihat trailer ➡️
-    </div>
-
-</section>
-
-<!-- ================= INFO ================= -->
-
-<section class="section">
-
-    <div class="section-title">
-
-        <h2>✨ KENAPA PILIH KAMI?</h2>
-
-    </div>
-
-    <div class="info-grid">
-
-        <div class="info-card">
-            <div class="icon">⚡</div>
-            <h3>Ringkas</h3>
-            <p>
-                Harga dan pilihan peranti dipaparkan dengan jelas.
-            </p>
-        </div>
-
-        <div class="info-card">
-            <div class="icon">📱</div>
-            <h3>Mesra Android</h3>
-            <p>
-                Direka supaya selesa digunakan pada telefon,
-                tablet dan desktop.
-            </p>
-        </div>
-
-        <div class="info-card">
-            <div class="icon">💰</div>
-            <h3>Harga Berpatutan</h3>
-            <p>
-                Pilihan RM17 atau RM20 mengikut jumlah peranti.
-            </p>
-        </div>
-
-        <div class="info-card">
-            <div class="icon">🎬</div>
-            <h3>Tontonan Harian</h3>
-            <p>
-                Sesuai untuk kegunaan hiburan harian.
-            </p>
-        </div>
-
-    </div>
-
-    <!-- ORDER BOX -->
-
-    <div class="order-box">
-
-        <h2>
-            🔥 NETFLIX PREMIUM PRIVATE 🎬
-        </h2>
-
-        <p>
-            Nikmati hiburan tanpa gangguan dengan harga yang berpatutan.
-        </p>
-
-        <p>
-            📩 Berminat? Hubungi saya untuk tempahan & pertanyaan.
-        </p>
-
-        <!-- TERUS KE WHATSAPP -->
-
-        <a
-            href="https://wa.me/601137883797?text=Assalamualaikum%20saya%20berminat%20Netflix%20Premium"
-            class="btn red-btn"
-            target="_blank"
-            rel="noopener"
-        >
-            📲 WHATSAPP SEKARANG
-        </a>
-
-    </div>
-
-    <p style="
-        text-align:center;
-        color:#777;
-        font-size:11px;
-        line-height:1.6;
-        margin-top:25px;
-    ">
-        *Halaman ini bukan laman rasmi Netflix.
-        Pastikan penggunaan bahan, tawaran dan kaedah penjualan
-        anda mematuhi terma serta polisi platform yang berkaitan.
-    </p>
-
-</section>
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    <strong style="color:#e50914;">
-        IJOI
-    </strong>
-    • NETFLIX PREMIUM PRIVATE
-
-    <br><br>
-
-    © 2026 IJOI • PREMIUM PRIVATE
-
-</footer>
-
-<!-- ================= FLOATING WHATSAPP ================= -->
-
-<a
-    href="https://wa.me/601137883797?text=Assalamualaikum%20saya%20berminat%20Netflix%20Premium"
-    class="floating"
-    aria-label="WhatsApp"
-    target="_blank"
-    rel="noopener"
->
-    📲
-</a>
-
-<!-- ================= BASIC PROTECTION ================= -->
-
-<script>
-
-(function(){
-
-    /* Halang klik kanan */
-
-    document.addEventListener(
-        "contextmenu",
-        function(e){
-            e.preventDefault();
-        }
-    );
-
-    /* Halang shortcut tertentu */
-
-    document.addEventListener(
-        "keydown",
-        function(e){
-
-            const key = e.key.toLowerCase();
-
-            if(
-                e.key === "F12" ||
-                (e.ctrlKey &&
-                 e.shiftKey &&
-                 ["i","j","c"].includes(key)) ||
-                (e.ctrlKey && key === "u")
-            ){
-
-                e.preventDefault();
-
-            }
-
-        }
-    );
-
-})();
-
-</script>
-
+<!-- end landing-card -->
 </body>
 </html>
+
+
